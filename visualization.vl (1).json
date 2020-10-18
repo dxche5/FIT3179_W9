@@ -1,0 +1,58 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "title": "Malaysia Population 2018",
+  "width": 800,
+  "height": 300,
+  "data": {
+    "url": "https://raw.githubusercontent.com/dxche5/FIT3179_W9/main/Malaysia_Polygon.json",
+    "format": {"type": "topojson", "feature": "Malaysia_Polygon"}
+  },
+  "transform": [
+    {
+      "lookup": "properties.name",
+      "from": {
+        "data": {
+          "url": "https://raw.githubusercontent.com/dxche5/FIT3179_W9/main/population2018.csv"
+        },
+        "key": "State",
+        "fields": [
+          "Population (million)",
+          "Male (million)",
+          "Female (million)",
+          "Average Annual Population Growth Rate (%)"
+        ]
+      }
+    }
+  ],
+  "projection": {"type": "mercator"},
+  "mark": {"type": "geoshape"},
+  "encoding": {
+    "color": {
+      "field": "Population (million)",
+      "type": "quantitative",
+      "scale": {
+        "type": "threshold",
+        "domain": [0.5, 1.5, 2.5, 3.5, 4.5],
+        "range": [
+          "#ffffd4",
+          "#fee391",
+          "#fec44f",
+          "#fe9929",
+          "#d95f0e",
+          "#993404"
+        ]
+      }
+    },
+    "tooltip": [
+      {"field": "properties.name", "type": "nominal", "title": "State"},
+      {"field": "Population (million)", "type": "quantitative"},
+      {"field": "Male (million)", "type": "quantitative"},
+      {"field": "Female (million)", "type": "quantitative"},
+      {
+        "field": "Average Annual Population Growth Rate (%)",
+        "type": "quantitative"
+      }
+    ]
+  },
+  "config": {}
+}
